@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Toggle Buttons</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #1c1c1c;
+            transition: background-color 1.5s ease;
+            margin: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .cta {
+            position: fixed;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: #c0c0c0;
+            text-align: center;
+            transition: opacity 2s ease;
+        }
+
+        .cta .light {
+            font-weight: 400;
+        }
+
+        .cta .bold {
+            font-weight: 700;
+            color: #c1ff72;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 1;
+            transition: opacity 2s ease;
+        }
+
+        .fade-out {
+            opacity: 0;
+        }
+
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .toggle-group img {
+            width: 80px;
+            height: 80px;
+            filter: grayscale(100%);
+            transition: filter 0.4s;
+            z-index: 1;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 120px;
+            height: 60px;
+            border-radius: 50px;
+            z-index: 2;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 50px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 50px;
+            width: 50px;
+            left: 5px;
+            bottom: 5px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #4cd964;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(60px);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .logo {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 170px;
+            height: auto;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+
+        .logo.fade-in {
+            opacity: 1;
+        }
+
+        .hidden-message {
+            position: fixed;
+            top: 53%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: #000000;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            font-weight: 800;
+        }
+
+        .hidden-message.fade-in {
+            opacity: 1;
+        }
+      
+      @media (max-width: 768px) {
+    body {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .container {
+        gap: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .toggle-group {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+    }
+
+    .toggle-group img {
+        width: 60px;
+        height: 60px;
+        margin-right: 5px; /* Reduced spacing between icon and switch */
+    }
+
+    .switch {
+        width: 100px;
+        height: 50px;
+    }
+
+    .slider {
+        height: 50px;
+    }
+
+    .slider:before {
+        height: 40px;
+        width: 40px;
+        left: 5px;
+        bottom: 5px;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(50px);
+    }
+
+    .cta {
+        font-size: 1rem;
+        margin-top: 30px;
+        text-align: center;
+        width: 100%;
+        align-self: center;
+    }
+
+    .logo {
+        width: 120px; /* Smaller logo size */
+        top: 50%; /* Adjusted position for smaller screens */
+    }
+
+    .hidden-message {
+        font-size: 1.5rem; /* Adjust text size */
+        top: 53%; /* Adjust position below the logo */
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="cta" id="cta">
+        <span class="light">Disconnect to Reconnect,</span>
+        <span class="bold">Gym Mode On.</span>
+    </div>
+
+    <div class="container" id="toggle-container">
+        <div class="toggle-group">
+            <img src="https://i.ibb.co/kJ02fCx/Elite-13.png" alt="Netflix" id="netflix-icon">
+            <label class="switch">
+                <input type="checkbox" id="netflix-toggle" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="toggle-group">
+            <img src="https://i.ibb.co/Th5TGjS/Elite-14.png" alt="Instagram" id="instagram-icon">
+            <label class="switch">
+                <input type="checkbox" id="instagram-toggle" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="toggle-group">
+            <img src="https://i.ibb.co/WsdgCD6/B-2024-10-08-T222307-304.png" alt="Gym" id="gym-icon">
+            <label class="switch">
+                <input type="checkbox" id="gym-toggle">
+                <span class="slider gym"></span>
+            </label>
+        </div>
+    </div>
+
+    <img src="https://i.ibb.co/jMmH9K7/Elite-15.png" alt="Logo" id="logo" class="logo">
+
+    <p id="final-message" class="hidden-message">Let's gooo!</p>
+
+    <script>
+        const netflixToggle = document.getElementById('netflix-toggle');
+        const instagramToggle = document.getElementById('instagram-toggle');
+        const gymToggle = document.getElementById('gym-toggle');
+        const body = document.body;
+        const toggleContainer = document.getElementById('toggle-container');
+        const cta = document.getElementById('cta');
+        const logo = document.getElementById('logo');
+        const finalMessage = document.getElementById('final-message');
+
+        const netflixIcon = document.getElementById('netflix-icon');
+        const instagramIcon = document.getElementById('instagram-icon');
+        const gymIcon = document.getElementById('gym-icon');
+
+        function updateIconColor(toggle, icon) {
+            if (toggle.checked) {
+                icon.style.filter = 'grayscale(0%)';
+            } else {
+                icon.style.filter = 'grayscale(100%)';
+            }
+        }
+
+        updateIconColor(netflixToggle, netflixIcon);
+        updateIconColor(instagramToggle, instagramIcon);
+        updateIconColor(gymToggle, gymIcon);
+
+        netflixToggle.addEventListener('change', function () {
+            updateIconColor(netflixToggle, netflixIcon);
+        });
+
+        instagramToggle.addEventListener('change', function () {
+            updateIconColor(instagramToggle, instagramIcon);
+        });
+
+        gymToggle.addEventListener('change', function () {
+    updateIconColor(gymToggle, gymIcon);
+    if (gymToggle.checked) {
+        gymToggle.disabled = true;
+
+        netflixToggle.checked = false;
+        instagramToggle.checked = false;
+
+        updateIconColor(netflixToggle, netflixIcon);
+        updateIconColor(instagramToggle, instagramIcon);
+
+        setTimeout(() => {
+            toggleContainer.classList.add('fade-out');
+            cta.classList.add('fade-out');
+
+            setTimeout(() => {
+                body.style.backgroundColor = '#333';
+
+                setTimeout(() => {
+                    logo.classList.add('fade-in');
+                    finalMessage.classList.add('fade-in');
+                    
+                    // Redirect to main.html after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = "main.html";
+                    }, 2000);
+                }, 1500);
+            }, 1000);
+        }, 500);
+    }
+});
+      
+      // Check if the page has been visited in this session
+if (sessionStorage.getItem('visited')) {
+    // Force refresh to show the initial state
+    sessionStorage.removeItem('visited');
+    window.location.reload();
+} else {
+    // Mark the page as visited
+    sessionStorage.setItem('visited', true);
+}
+
+
+    </script>
+</body>
+</html>
