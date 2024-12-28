@@ -337,16 +337,17 @@
     </script>
 
         <script>
-// Check if the page has been visited in this session
+// Check if the user has visited this page in this session
 if (sessionStorage.getItem('visited')) {
-    // Force refresh to show the initial state
+    // Remove the session storage key and reload the page to reset
     sessionStorage.removeItem('visited');
-    window.location.reload();
+    window.location.href = window.location.href.split('#')[0]; // Force reload without hash
 } else {
     // Mark the page as visited
     sessionStorage.setItem('visited', true);
 }
-                </script>
+  
+      </script>
 
 </body>
 </html>
