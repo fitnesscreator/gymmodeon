@@ -337,15 +337,12 @@
     </script>
 
         <script>
-// Check if the URL contains the 'reset' parameter
-if (!window.location.search.includes('reset')) {
-    // Append the 'reset' parameter to the URL
-    const newUrl = window.location.href.split('?')[0] + '?reset';
-    window.location.replace(newUrl);
-} else {
-    // Logic to run the page normally
-    sessionStorage.setItem('visited', true); // Mark the page as visited
-}
+// Refresh the page if the user navigates back
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
   
       </script>
 
