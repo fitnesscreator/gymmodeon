@@ -337,14 +337,14 @@
     </script>
 
         <script>
-// Check if the user has visited this page in this session
-if (sessionStorage.getItem('visited')) {
-    // Remove the session storage key and reload the page to reset
-    sessionStorage.removeItem('visited');
-    window.location.href = window.location.href.split('#')[0]; // Force reload without hash
+// Check if the URL contains the 'reset' parameter
+if (!window.location.search.includes('reset')) {
+    // Append the 'reset' parameter to the URL
+    const newUrl = window.location.href.split('?')[0] + '?reset';
+    window.location.replace(newUrl);
 } else {
-    // Mark the page as visited
-    sessionStorage.setItem('visited', true);
+    // Logic to run the page normally
+    sessionStorage.setItem('visited', true); // Mark the page as visited
 }
   
       </script>
