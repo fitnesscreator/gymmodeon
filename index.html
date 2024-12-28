@@ -332,8 +332,12 @@
         }, 500);
     }
 });
-      
-      // Check if the page has been visited in this session
+
+
+    </script>
+
+        <script>
+// Check if the page has been visited in this session
 if (sessionStorage.getItem('visited')) {
     // Force refresh to show the initial state
     sessionStorage.removeItem('visited');
@@ -342,8 +346,7 @@ if (sessionStorage.getItem('visited')) {
     // Mark the page as visited
     sessionStorage.setItem('visited', true);
 }
+                </script>
 
-
-    </script>
 </body>
 </html>
