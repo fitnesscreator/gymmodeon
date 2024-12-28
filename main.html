@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Trainer Fitness Coach</title>
+    <style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Gradient background for body */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #a6a6a6, #ffffff);
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header styling */
+        .header {
+            width: 100vw;
+            max-width: 1500px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1; /* Keep header below the menu icon */
+        }
+
+        /* Navbar styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            width: 100%;
+            position: relative;
+        }
+
+        /* Logo styling */
+        .logo img {
+            height: 70px;
+            width: auto;
+        }
+
+        /* Hamburger menu styling */
+        .menu-icon {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    position: absolute; /* Default position in the navbar */
+    top: 20px;
+    right: 20px;
+    z-index: 10001; /* Ensure it's above the fullscreen menu */
+    pointer-events: auto; /* Always clickable */
+
+      }
+      /* Hamburger menu hidden in fullscreen menu by default */
+.fullscreen-menu.active .menu-icon {
+    position: fixed; /* Fix position to the screen during menu open */
+    top: 20px; /* Keep it in the same spot */
+    right: 20px;
+    z-index: 10001; /* Ensure it's above the fullscreen menu */
+    pointer-events: auto;
+}
+
+        /* Hamburger lines */
+        .menu-icon div {
+            width: 50px;
+            height: 4px;
+            background-color: #333;
+            margin: 5px 0;
+            border-radius: 3px;
+            transition: 0.3s ease;
+        }
+
+        /* Transform hamburger icon into an "X" */
+        .menu-icon.active div:nth-child(1) {
+            transform: rotate(45deg) translate(0, 0);
+            position: absolute;
+            top: 8px;
+        }
+
+        .menu-icon.active div:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-icon.active div:nth-child(3) {
+            transform: rotate(-45deg) translate(0, 0);
+            position: absolute;
+            top: 8px;
+        }
+
+       .fullscreen-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999; /* Below the menu icon */
+    pointer-events: none; /* Disable pointer events by default */
+}
+
+/* Show fullscreen menu when active */
+.fullscreen-menu.active {
+    display: flex;
+    pointer-events: auto; /* Enable interaction */
+}
+
+        /* Logo inside fullscreen menu with subtle neon effect */
+        .menu-logo {
+            display: none; /* Initially hidden */
+            margin-bottom: 20px;
+            width: 100px;
+            filter: brightness(1.5);
+            animation: subtleNeonGlow 1.5s ease-in-out infinite alternate;
+        }
+
+        .fullscreen-menu.active .menu-logo {
+            display: block; /* Show when menu is active */
+        }
+
+        /* Subtle neon glow effect */
+        @keyframes subtleNeonGlow {
+            from {
+                filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 10px #fff);
+            }
+            to {
+                filter: drop-shadow(0 0 10px #fff) drop-shadow(0 0 15px #fff);
+            }
+        }
+
+        /* Motivational text styling */
+        .quote-container {
+            text-align: center;
+            padding: 10px;
+            margin-top: -40px;
+            position: relative;
+            z-index: 0;
+        }
+
+        .quote-small {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333;
+            text-transform: uppercase;
+            margin-bottom: -30px;
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .quote-large {
+            font-size: 6.5rem;
+            font-weight: 800;
+            color: #000000;
+            text-transform: uppercase;
+            margin-top: -10px;
+        }
+
+        /* Hero banner image styling */
+        .hero-banner-container {
+            position: relative;
+            width: 100%;
+            max-width: 1500px;
+            margin: 20px auto;
+            border-radius: 60px;
+            overflow: hidden;
+            margin-top: -10px;
+            z-index: 0; /* Lower z-index to avoid overlapping with fullscreen menu */
+        }
+
+        .hero-banner {
+            display: block;
+            width: 100%;
+            height: 700px;
+            object-fit: cover;
+        }
+
+        /* Additional quote styling on hero banner */
+        .banner-quote {
+            font-size: 6.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-transform: uppercase;
+            position: absolute;
+            top: 60%; /* Move quote to lower half */
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 1;
+            width: 80%;
+        }
+
+        /* Container for sub-quote and CTA aligned with the quote width */
+        .sub-cta-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            top: 75%; /* Position below the quote */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 1110px;
+            z-index: 1; /* Lower z-index to avoid overlapping with fullscreen menu */
+            margin-top: 40px;
+        }
+
+        /* Short text styling below the quote */
+        .sub-quote {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #ffffff;
+            max-width: 70%;
+        }
+
+        /* CTA button styling */
+        .cta-button {
+            padding: 15px 30px;
+            background: linear-gradient(to right, #fa7e1e, #d62976);;
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Link styling and animations */
+        .fullscreen-menu a {
+            color: #fff;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 20px 0;
+            text-decoration: none;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+            transition: color 0.3s ease; /* Transition for hover color */
+        }
+
+        /* Hover color for fullscreen menu links */
+        .fullscreen-menu a:hover {
+            color: #d3d3d3; /* Light gray on hover */
+        }
+
+        /* Fade-in animations for each link */
+        .fullscreen-menu a:nth-child(2) { /* First link after logo */
+            animation-delay: 0.2s;
+        }
+        .fullscreen-menu a:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        .fullscreen-menu a:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+        .fullscreen-menu a:nth-child(5) {
+            animation-delay: 0.8s;
+        }
+        .fullscreen-menu a:nth-child(6) { /* Last link, "Contact Me" */
+            animation-delay: 1s;
+        }
+
+        /* Keyframes for animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+      
+      /* About Me Section */
+        .about-me-section {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(to right, #a6a6a6, #ffffff);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Circle Background for Profile Picture */
+        .profile-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(to bottom right, #000000, #b3b3b3);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Profile Picture Styling */
+        .about-me-profile {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .about-me-profile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Verified Badge Styling */
+        .verified-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 25px;
+            height: 25px;
+        }
+
+        /* Heading and Text */
+        .about-me-heading {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .about-me-text {
+            font-size: 1.2rem;
+            color: #333;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        /* Audio Bar */
+        .audio-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #000;
+    width: 350px; /* Increased width */
+    height: 60px; /* Increased height */
+    border-radius: 30px; /* Adjusted radius for the larger size */
+    padding: 0 20px; /* Adjusted padding for balance */
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+        /* Play/Pause Button */
+        .play-button {
+    width: 30px; /* Adjust width for the icon */
+    height: 30px; /* Adjust height for the icon */
+    background-size: cover; /* Ensure the icon fills the button */
+    background-position: center; /* Center the icon */
+    background-repeat: no-repeat; /* Prevent repeating */
+    cursor: pointer; /* Show pointer on hover */
+    border: none; /* Remove default button styling */
+    outline: none; /* Remove outline on focus */
+}
+
+        /* Waveform Container */
+        .waveform-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    gap: 3px; /* Adjusted gap for the larger size */
+    position: relative;
+    z-index: 1;
+}
+
+        /* Individual Wave Bars */
+        .wave {
+    width: 4px; /* Increased wave width */
+    background-color: #e0e0e0;
+    border-radius: 2px; /* Slightly rounded edges for waves */
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+        /* Blue Fill for Progress */
+        .wave .fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0; /* Starts at 0% */
+            background-color: #007bff; /* Blue color */
+            transition: width 0.5s ease; /* Smooth transition */
+            z-index: 2;
+        }
+
+        /* Different heights for wave bars */
+        .wave:nth-child(1) { height: 14px; }
+        .wave:nth-child(2) { height: 18px; }
+        .wave:nth-child(3) { height: 10px; }
+        .wave:nth-child(4) { height: 22px; }
+        .wave:nth-child(5) { height: 16px; }
+        .wave:nth-child(6) { height: 20px; }
+        .wave:nth-child(7) { height: 12px; }
+        .wave:nth-child(8) { height: 18px; }
+        .wave:nth-child(9) { height: 24px; }
+        .wave:nth-child(10) { height: 14px; }
+        .wave:nth-child(11) { height: 20px; }
+        .wave:nth-child(12) { height: 16px; }
+        .wave:nth-child(13) { height: 22px; }
+        .wave:nth-child(14) { height: 10px; }
+        .wave:nth-child(15) { height: 18px; }
+        .wave:nth-child(16) { height: 14px; }
+        .wave:nth-child(17) { height: 22px; }
+        .wave:nth-child(18) { height: 12px; }
+        .wave:nth-child(19) { height: 18px; }
+        .wave:nth-child(20) { height: 10px; }
+        .wave:nth-child(21) { height: 22px; }
+        .wave:nth-child(22) { height: 16px; }
+        .wave:nth-child(23) { height: 12px; }
+        .wave:nth-child(24) { height: 20px; }
+        .wave:nth-child(25) { height: 14px; }
+        .wave:nth-child(26) { height: 18px; }
+        .wave:nth-child(27) { height: 10px; }
+        .wave:nth-child(28) { height: 16px; }
+        .wave:nth-child(29) { height: 24px; }
+        .wave:nth-child(30) { height: 20px; }
+
+        /* Played time styling */
+        .played-time {
+            font-size: 0.8rem;
+            color: #fff;
+            z-index: 2;
+        }
+      
+      /* Services Title Container */
+.services-title-container {
+    position: relative;
+    text-align: center;
+    margin-top: 0px;
+    max-width: 1500px;
+}
+
+/* Services Title */
+.services-title {
+    font-size: 6rem;
+    font-weight: 800;
+    color: black;
+    opacity: 0.3; /* Semi-transparent */
+    filter: blur(5px); /* Reduced blur effect */
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Adds a shadow effect */
+}
+
+/* Services Section */
+.services-section {
+    display: flex;
+    justify-content: center; /* Center-align the images */
+    gap: 20px; /* Space between the images */
+    margin-top: 20px; /* Space below the title */
+    padding: 0 20px; /* Padding for better responsiveness */
+}
+
+/* Service Card Styling */
+.service-card {
+    position: relative; /* Enable positioning for child elements */
+    width: 355px; /* Set the size to create squares */
+    height: 355px; /* Set height equal to width for perfect squares */
+    border-radius: 60px; /* Rounded corners */
+    overflow: hidden; /* Ensure content stays inside the card */
+}
+
+/* Service Card Image */
+.service-card img {
+    width: 100%; /* Full width for responsiveness */
+    height: 100%; /* Ensure the image fills the square */
+    object-fit: cover; /* Cover the area while maintaining proportions */
+    display: block; /* Remove inline spacing */
+}
+
+/* Service Card Icon (top-right corner, fixed size) */
+.service-icon {
+    position: absolute;
+    top: 20px; /* Closer to the top edge */
+    right: 20px; /* Closer to the right edge */
+    width: 40px !important; /* Explicitly enforce size */
+    height: 40px !important; /* Explicitly enforce size */
+    object-fit: contain; /* Ensure the image scales properly */
+    z-index: 1; /* Ensure it appears above the image */
+}
+
+/* Title and Description Container */
+.service-details {
+    position: absolute;
+    bottom: 15px; /* Slightly above the bottom edge */
+    left: 25px; /* Align with the left edge */
+    color: #fff; /* White text for contrast */
+}
+
+/* Service Title */
+.service-title {
+    font-size: 1.2rem; /* Slightly smaller */
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+/* Service Description */
+.service-description {
+    font-size: 0.9rem; /* Slightly smaller */
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+      /* Reviews Section Styling */
+        .reviews-section {
+            max-width: 1500px;
+            background: linear-gradient(to right, #000000, #606060); /* Gradient background */
+            padding: 50px 20px;
+            text-align: center;
+            color: #fff;
+            border-radius: 60px;
+            margin: 30px auto;
+            position: relative;
+        }
+
+        /* Reviews Container */
+        .reviews-container {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        /* Individual Review Styling */
+.review {
+    opacity: 0;
+    position: absolute;
+    transition: opacity 1s ease-in-out; /* Smooth cross-fade transition */
+    width: 100%;
+    max-width: 700px;
+}
+
+/* Animation for review visibility with cross-fade */
+@keyframes review-crossfade {
+    0%, 20% {
+        opacity: 1; /* Fully visible during this part */
+    }
+    30%, 100% {
+        opacity: 0; /* Starts fading out */
+    }
+}
+
+/* For the first review */
+.review:nth-child(1) {
+    animation: review-crossfade 15s linear infinite;
+}
+
+/* For the second review */
+.review:nth-child(2) {
+    animation: review-crossfade 15s linear infinite;
+    animation-delay: 5s; /* Delayed to sync with the first review */
+}
+
+/* For the third review */
+.review:nth-child(3) {
+    animation: review-crossfade 15s linear infinite;
+    animation-delay: 10s; /* Delayed to sync with the second review */
+}
+
+
+        /* Stars Styling */
+        .review-stars {
+            font-size: 1.5rem;
+            color: #fff; /* White stars */
+            margin-bottom: 15px;
+        }
+
+        /* Review Text */
+        .review-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 0 auto;
+            color: #f0f0f0;
+        }
+
+        /* Profile Image */
+        .review-profile img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        /* Name Styling */
+        .review-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff; /* White name */
+            margin-top: 15px;
+        }
+
+        /* Progress Bars Container */
+        .progress-bars {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        /* Progress Bars Container */
+        .progress-bars {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        /* Progress Bar Styling */
+        .progress-bar {
+            width: 150px;
+            height: 10px;
+            background: #ffffff; /* White background */
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden; /* Ensure fill stays inside the bar */
+        }
+
+        /* Inner animated fill for bars */
+        .progress-bar .fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0; /* Start with 0 width */
+            background: linear-gradient(to right, #ff7e00, #ff3d00); /* Gradient fill */
+            border-radius: 5px;
+            animation: none; /* Dynamically applied */
+        }
+
+      /* Contact Me Section Title */
+.contact-title {
+    font-size: 3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.contact-subtitle {
+    font-size: 1.2rem;
+    color: #333; /* Changed to a darker shade for contrast */
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Form Styling */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 30px;
+    background: #d9d9d9;
+    color: #000;
+    outline: none;
+    transition: background-color 0.3s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    background: #f0f0f0;
+}
+
+.form-textarea {
+    height: 150px;
+    resize: none;
+}
+
+.submit-button {
+    background: linear-gradient(to right, #feda75, #fa7e1e, #d62976);
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Social Media Icons */
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-icons a img {
+    width: 25px; /* Reduced size */
+    height: 25px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    filter: brightness(0.8);
+    margin-bottom: 50px;
+}
+
+.social-icons a img:hover {
+    transform: scale(1.2);
+    filter: brightness(1);
+}
+
+
+@media screen and (max-width: 768px) {
+    /* Adjust body padding */
+    body {
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+
+    /* Header and navbar adjustments */
+    .header {
+        padding: 0;
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .logo img {
+        height: 50px;
+    }
+
+    .menu-icon div {
+        width: 35px;
+        height: 2px;
+    }
+
+    /* Adjust small quote to align with logo and burger icon */
+    .quote-small {
+        font-size: 1rem; /* Reduced size to fit smaller screens */
+        position: absolute;
+        top: 0px; /* Vertically centered within the navbar */
+        left: 50%; /* Centered horizontally relative to the navbar */
+        transform: translate(-50%, -50%);
+        white-space: nowrap; /* Prevent the quote from wrapping */
+    }
+
+    .quote-large {
+        font-size: 1.6rem; /* Adjusted size for smaller screens */
+        margin-top: 20px; /* Ensures proper spacing from the small quote */
+        text-align: center;
+    }
+
+    /* Hero banner adjustments */
+    .hero-banner-container {
+        position: relative; /* Keep content inside the container */
+        border-radius: 20px;
+        margin: 10px auto;
+        overflow: hidden;
+        padding: 0 10px;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .hero-banner {
+        width: 100%;
+        height: 60vh;
+        object-fit: cover;
+        border-radius: 20px;
+    }
+
+    /* Center-align content inside the hero banner */
+    .banner-quote, 
+    .sub-cta-container {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        color: #fff; /* Ensure text is readable on the banner */
+    }
+
+    .banner-quote {
+        top: 65%; /* Adjust position inside the banner */
+        font-size: 1.9rem; /* Responsive font size */
+        white-space: normal;
+        line-height: 1.2;
+    }
+
+    .sub-cta-container {
+        top: 65%; /* Place below the quote */
+        flex-direction: column; /* Stack elements */
+        align-items: center;
+        justify-content: center;
+        gap: 10px; /* Add spacing between elements */
+    }
+
+    .sub-quote {
+        font-size: 0.95rem;
+        max-width: 90%;
+        color: #ffffff;
+    }
+
+    .cta-button {
+        font-size: 1rem;
+        padding: 10px 15px;
+        background: linear-gradient(to right, #fa7e1e, #d62976);
+        border-radius: 30px;
+        margin-top: 10px;
+    }
+
+
+    /* Fullscreen menu adjustments */
+    .fullscreen-menu a {
+        font-size: 2rem;
+    }
+
+    /* About Me section adjustments */
+    .about-me-section {
+        padding: 30px 10px;
+    }
+
+    .profile-container {
+        width: 100px;
+        height: 100px;
+    }
+
+    .about-me-profile {
+        width: 80px;
+        height: 80px;
+    }
+
+    .about-me-heading {
+        font-size: 1.5rem;
+    }
+
+    .about-me-text {
+        font-size: 1rem;
+        padding: 0 10px;
+    }
+
+    .audio-bar {
+        width: 80%;
+        height: 50px;
+        padding: 0 10px;
+    }
+
+    .wave {
+        width: 3px;
+    }
+
+    /* Services section adjustments */
+    .services-title {
+        font-size: 3rem; /* Adjusted size for smaller screens */
+    }
+
+    /* Services Section */
+    .services-section {
+        flex-wrap: nowrap; /* No wrapping needed for vertical stacking */
+        flex-direction: column; /* Stack items vertically */
+        gap: 20px; /* Add spacing between cards */
+        align-items: center; /* Center-align the cards */
+    }
+
+    .service-card {
+        width: 90%; /* Take up most of the screen width */
+        height: auto; /* Maintain aspect ratio */
+        aspect-ratio: 1 / 1; /* Ensure square shape */
+        border-radius: 40px; /* Maintain rounded corners */
+        overflow: hidden; /* Ensure content stays inside the card */
+    }
+
+    /* Service Details */
+    .service-details {
+        left: 15px; /* Adjusted for smaller screens */
+        bottom: 10px; /* Adjusted for smaller screens */
+    }
+
+    .service-title {
+        font-size: 1rem; /* Adjusted size for smaller screens */
+    }
+
+    .service-description {
+        font-size: 0.8rem; /* Adjusted size for smaller screens */
+    }
+
+    .reviews-section {
+        padding: 20px 10px; /* Maintain internal padding */
+        margin: 30px 10px; /* Add margin on top, bottom, left, and right */
+        border-radius: 40px; /* Apply 40px rounded corners */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add subtle shadow for better appearance */
+    }
+
+    .reviews-container {
+        gap: 15px; /* Slightly reduced gap for smaller screens */
+    }
+
+    .review {
+        max-width: 100%; /* Ensure reviews take the full width */
+    }
+
+    .review-profile img {
+        width: 60px; /* Smaller profile images */
+        height: 60px;
+    }
+
+    .review-stars {
+        font-size: 1.2rem; /* Slightly smaller stars */
+        margin-bottom: 5px; /* Reduce space below stars */
+    }
+
+    .review-text {
+        font-size: 0.8rem; /* Reduced text size */
+        line-height: 1.4; /* Adjusted for readability */
+        margin-bottom: 10px; /* Reduce space below the text */
+    }
+
+    .review-name {
+        font-size: 0.9rem; /* Slightly smaller names */
+        margin-top: 5px; /* Reduce space above the name */
+    }
+
+    .progress-bars {
+        margin-top: 0px; /* Reduce space above the progress bars */
+        gap: 7px; /* Reduce space between progress bars */
+    }
+
+    .progress-bar {
+        width: 90px; /* Make progress bars smaller */
+        height: 5px;
+    }
+
+    /* Contact me section adjustments */
+    .contact-title {
+        font-size: 2rem;
+    }
+
+    .contact-subtitle {
+        font-size: 1rem;
+    }
+
+    .contact-form {
+        padding: 0 10px;
+    }
+
+    .form-input,
+    .form-textarea {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .submit-button {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+
+    .social-icons a img {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <header class="header" id="home">
+        <nav class="navbar">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="#"><img src="https://i.ibb.co/M6s5VtN/Untitled-design-30.png" alt="Logo"></a>
+            </div>
+            <!-- Hamburger menu icon -->
+            <div class="menu-icon" onclick="toggleMenu()" id="menuIcon">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </nav>
+
+        <!-- Motivational Quotes Section -->
+        <div class="quote-container">
+            <p class="quote-small">MAKE TODAY COUNT</p>
+            <p class="quote-large">YOUR ONLY LIMIT IS YOU</p>
+        </div>
+
+        <!-- Hero Banner Image with Overlay Quote and CTA -->
+        <div class="hero-banner-container">
+            <img src="https://i.ibb.co/ph5rNYP/pexels-dreamlensproduction-896058.jpg" alt="Hero Banner" class="hero-banner">
+            <p class="banner-quote">PUSH YOUR LIMITS</p>
+            
+            <!-- Container for sub-quote and CTA -->
+            <div class="sub-cta-container">
+                <p class="sub-quote">Take the first step towards a stronger you.</p>
+                <button class="cta-button">Start Your Journey</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Fullscreen Menu with neon logo -->
+    <div class="fullscreen-menu" id="fullscreenMenu">
+        <img src="https://i.ibb.co/4Mt7kn5/Elite.png" alt="Elite Logo" class="menu-logo">
+        <a href="#home" onclick="closeMenu()">Home</a>
+    <a href="#about" onclick="closeMenu()">About Me</a>
+    <a href="#services" onclick="closeMenu()">Services</a>
+    <a href="#customers" onclick="closeMenu()">Customers</a>
+    <a href="#contact" onclick="closeMenu()">Contact Me</a>
+    </div>
+  
+  <section class="about-me-section" id="about">
+        <div class="profile-container">
+            <div class="about-me-profile">
+                <img src="https://i.ibb.co/pj0zfPC/Elite-1.png" alt="Profile Picture">
+            </div>
+            <img src="https://i.ibb.co/cbNNM91/Elite-2.png" alt="Verified Badge" class="verified-badge">
+        </div>
+        
+        <h2 class="about-me-heading">Hi, I'm Jake</h2>
+        <p class="about-me-text">
+            a dedicated fitness coach here to help you unlock your strength and confidence. With years of experience, I’m passionate about guiding people to push their limits and reach their wellness goals. Let’s work together to make each milestone count on your journey to a healthier, stronger you.
+        </p>
+        
+        <!-- Audio Bar -->
+        <div class="audio-bar">
+            <div class="play-button" id="playButton"></div>
+            <div class="waveform-container" id="waveformContainer">
+                <!-- Added more wave elements to completely fill the audio bar -->
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+                <div class="wave"><div class="fill"></div></div>
+            </div>
+            <span class="played-time" id="playedTime">0:00</span>
+        </div>
+    </section>
+
+<!-- My Services Title -->
+<div class="services-title-container" id="services">
+    <h2 class="services-title">MY SERVICES</h2>
+</div>
+
+<!-- Services Section -->
+<div class="services-section">
+    <!-- Service 1 -->
+    <div class="service-card">
+        <img src="https://i.ibb.co/yQNbwFw/40ce9aaa2340c8cf2eaf6087c72c33dc.jpg" alt="Workout Plan">
+        <img src="https://i.ibb.co/xM434Df/Elite-4.png" alt="Workout Plan Icon" class="service-icon">
+        <div class="service-details">
+            <h3 class="service-title">Personalized Workout Plan</h3>
+            <p class="service-description">Custom fitness routines tailored to your goals and lifestyle for optimal results.</p>
+        </div>
+    </div>
+
+    <!-- Service 2 -->
+    <div class="service-card">
+        <img src="https://i.ibb.co/fCxxdrM/ed756975f1264efedb5284a33b0ea289.jpg" alt="Nutrition Coaching">
+        <img src="https://i.ibb.co/LQXZzQJ/Elite-5.png" alt="Nutrition Icon" class="service-icon">
+        <div class="service-details">
+            <h3 class="service-title">Nutrition Coaching</h3>
+            <p class="service-description">Learn how to fuel your body with the right meals and achieve your fitness goals.</p>
+        </div>
+    </div>
+
+    <!-- Service 3 -->
+    <div class="service-card">
+        <img src="https://i.ibb.co/SrLtjp9/8c42e39cecf0f8a6bd3a72afbb596907.jpg" alt="1-on-1 Training">
+        <img src="https://i.ibb.co/pxf9c5Z/Elite-6.png" alt="1-on-1 Icon" class="service-icon">
+        <div class="service-details">
+            <h3 class="service-title">1-on-1 Training</h3>
+            <p class="service-description">Focused personal training to ensure your form, progress, and technique are perfect.</p>
+        </div>
+    </div>
+
+    <!-- Service 4 -->
+    <div class="service-card">
+        <img src="https://i.ibb.co/gmQSV61/5399be0ecac00e9f4c768145b7b51492.jpg" alt="Group Fitness">
+        <img src="https://i.ibb.co/Jvwc8Nx/Elite-7.png" alt="Group Fitness Icon" class="service-icon">
+        <div class="service-details">
+            <h3 class="service-title">Group Fitness Classes</h3>
+            <p class="service-description">Join others in a fun, high-energy environment and stay motivated together.</p>
+        </div>
+    </div>
+</div>
+  
+  
+  <!-- Customer Reviews Section -->
+    <section class="reviews-section" id="customers">
+        <div class="reviews-container">
+            <!-- Review 1 -->
+            <div class="review" id="review-1">
+                <div class="review-profile">
+                    <img src="https://i.ibb.co/Lkq3Xht/Elite-10.png" alt="Customer 1">
+                </div>
+                <div class="review-stars">★★★★★</div>
+                <div class="review-text">
+                    <p>"Working with this trainer has completely transformed my life. The personalized workout plans and consistent motivation have helped me achieve goals I never thought possible. I feel stronger, healthier, and more confident every day."</p>
+                </div>
+                <p class="review-name">Michael</p>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="review" id="review-2">
+                <div class="review-profile">
+                    <img src="https://i.ibb.co/qN50JWK/Elite-9.png" alt="Customer 2">
+                </div>
+                <div class="review-stars">★★★★★</div>
+                <div class="review-text">
+                    <p>"This personal trainer has been a game-changer. The workouts are tailored to my exact needs, and the nutrition advice has been invaluable. In just a few months, I’ve seen incredible progress, both physically and mentally."</p>
+                </div>
+                <p class="review-name">John</p>
+            </div>
+
+            <!-- Review 3 -->
+            <div class="review" id="review-3">
+                <div class="review-profile">
+                    <img src="https://i.ibb.co/bLpLg7t/Elite-8.png" alt="Customer 3">
+                </div>
+                <div class="review-stars">★★★★★</div>
+                <div class="review-text">
+                    <p>"I’ve worked with several trainers in the past, but this one stands out. Their approach is holistic, focusing on both physical and mental well-being. The support and accountability have made all the difference in my journey."</p>
+                </div>
+                <p class="review-name">David</p>
+            </div>
+        </div>
+
+        <!-- Progress Bars -->
+        <div class="progress-bars">
+            <div class="progress-bar">
+                <div class="fill" id="fill-1"></div>
+            </div>
+            <div class="progress-bar">
+                <div class="fill" id="fill-2"></div>
+            </div>
+            <div class="progress-bar">
+                <div class="fill" id="fill-3"></div>
+            </div>
+        </div>
+    </section>
+  
+  <!-- Contact Me Section -->
+<h2 class="contact-title" id="contact">Contact Me</h2>
+<p class="contact-subtitle">Let's connect and achieve your fitness goals together!</p>
+<!-- Contact Form -->
+<form class="contact-form">
+    <input type="text" placeholder="Your Name" class="form-input" required>
+    <input type="email" placeholder="Your Email" class="form-input" required>
+    <textarea placeholder="Your Message" class="form-textarea" required></textarea>
+    <button type="submit" class="submit-button">Send Message</button>
+</form>
+<!-- Social Media Icons -->
+<div class="social-icons">
+    <a href="#" target="_blank"><img src="https://i.ibb.co/whYw9tf/Instagram-icon-png.png" alt="Instagram"></a>
+    <a href="#" target="_blank"><img src="https://i.ibb.co/JvLtTqq/Tik-Tok-icon-png.png" alt="TikTok"></a>
+    <a href="#" target="_blank"><img src="https://i.ibb.co/9nFXH9w/Facebook-icon-png.png" alt="Facebook"></a>
+    <a href="#" target="_blank"><img src="https://i.ibb.co/mzcHsqH/X-icon-png.png" alt="X (Twitter)"></a>
+</div>
+
+
+
+    <!-- JavaScript to toggle the menu -->
+    <script>
+       document.addEventListener("DOMContentLoaded", function () {
+    const fullscreenMenu = document.getElementById("fullscreenMenu");
+    const menuIcon = document.getElementById("menuIcon");
+    const navLinks = document.querySelectorAll(".fullscreen-menu a");
+
+    // Function to toggle the fullscreen menu
+    function toggleMenu() {
+        fullscreenMenu.classList.toggle("active");
+        menuIcon.classList.toggle("active");
+    }
+
+    // Function to close the fullscreen menu
+    function closeMenu() {
+        fullscreenMenu.classList.remove("active");
+        menuIcon.classList.remove("active");
+    }
+
+    // Event listener for toggling the menu when clicking the hamburger icon
+    menuIcon.addEventListener("click", function (event) {
+        event.stopPropagation(); // Prevent click from affecting other elements
+        toggleMenu();
+    });
+
+    // Close the fullscreen menu if clicking outside of it
+    fullscreenMenu.addEventListener("click", function (event) {
+        if (event.target === fullscreenMenu) {
+            closeMenu();
+        }
+    });
+
+    // Smooth scroll and close menu on link click
+    navLinks.forEach(link => {
+        link.addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent default anchor behavior
+            const targetId = this.getAttribute("href").slice(1); // Extract target ID
+            const targetElement = document.getElementById(targetId);
+
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: "smooth" }); // Smooth scroll to the section
+                closeMenu(); // Close the fullscreen menu
+            }
+        });
+    });
+});
+
+    </script>
+  <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const playButton = document.getElementById("playButton");
+    const fills = document.querySelectorAll(".wave .fill");
+    const playedTime = document.getElementById("playedTime");
+
+    const audio = new Audio("https://raw.githubusercontent.com/fitnesscreator/Marketplace/main/Photos/Jake%20Ryder.mp3"); // Link to your GitHub audio file
+
+    let isPlaying = false;
+    let currentTime = 0;
+
+    // Set initial background image for play button
+    playButton.style.backgroundImage = "url('https://i.ibb.co/d71TQwT/Elite-11.png')";
+
+    playButton.addEventListener("click", function () {
+        isPlaying ? pauseAudio() : playAudio();
+    });
+
+    function playAudio() {
+        audio.play();
+        isPlaying = true;
+        playButton.style.backgroundImage = "url('https://i.ibb.co/JtdjCkK/Elite-12.png')"; // Pause icon
+        startWaveProgress();
+    }
+
+    function pauseAudio() {
+        audio.pause();
+        isPlaying = false;
+        playButton.style.backgroundImage = "url('https://i.ibb.co/d71TQwT/Elite-11.png')"; // Play icon
+        stopWaveProgress();
+    }
+
+    audio.addEventListener("timeupdate", function () {
+        const duration = audio.duration || 30; // Fallback duration
+        currentTime = audio.currentTime;
+        const progress = (currentTime / duration) * fills.length;
+
+        fills.forEach((fill, index) => {
+            if (index < Math.floor(progress)) {
+                fill.style.width = "100%";
+                fill.style.backgroundColor = "#007bff";
+            } else if (index === Math.floor(progress)) {
+                fill.style.width = `${(progress - index) * 100}%`;
+                fill.style.backgroundColor = "#007bff";
+            } else {
+                fill.style.width = "0";
+                fill.style.backgroundColor = "transparent";
+            }
+        });
+
+        const minutes = Math.floor(currentTime / 60);
+        const seconds = Math.floor(currentTime % 60).toString().padStart(2, "0");
+        playedTime.textContent = `${minutes}:${seconds}`;
+    });
+
+    audio.addEventListener("ended", function () {
+        pauseAudio();
+        currentTime = 0;
+        playedTime.textContent = "0:00";
+        fills.forEach((fill) => {
+            fill.style.width = "0";
+            fill.style.backgroundColor = "transparent";
+        });
+    });
+
+    function startWaveProgress() {
+        audio.play();
+    }
+
+    function stopWaveProgress() {
+        audio.pause();
+    }
+});
+
+
+    </script>
+  <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const progressBarFills = document.querySelectorAll(".progress-bar .fill"); // Select all progress bar fills
+    const reviews = document.querySelectorAll(".review"); // Select all reviews
+    const reviewDuration = 5000; // Duration for each review (5 seconds)
+    const totalBars = progressBarFills.length; // Total number of progress bars
+    let startTime = performance.now(); // Record the initial timestamp
+
+    // Function to update the progress bars and reviews
+    function updateProgressBarsAndReviews(timestamp) {
+        const elapsedTime = timestamp - startTime; // Calculate elapsed time
+        const totalCycleTime = reviewDuration * totalBars; // Total time for all bars
+        const currentCycleTime = elapsedTime % totalCycleTime; // Time within the current cycle
+
+        // Determine the current review and progress bar based on elapsed time
+        const currentIndex = Math.floor(currentCycleTime / reviewDuration);
+        const currentBarProgress = (currentCycleTime % reviewDuration) / reviewDuration;
+
+        // Update reviews
+        reviews.forEach((review, index) => {
+            review.style.opacity = index === currentIndex ? "1" : "0";
+            review.style.position = index === currentIndex ? "static" : "absolute";
+        });
+
+        // Update progress bars
+        progressBarFills.forEach((bar, index) => {
+            if (index < currentIndex) {
+                bar.style.width = "100%"; // Bars before the current index remain filled
+                bar.style.transition = "none";
+            } else if (index === currentIndex) {
+                bar.style.width = `${currentBarProgress * 100}%`; // Current bar in progress
+                bar.style.transition = "none"; // Disable transition for accurate progress
+            } else {
+                bar.style.width = "0"; // Bars after the current index remain empty
+                bar.style.transition = "none";
+            }
+        });
+
+        // Request the next animation frame
+        requestAnimationFrame(updateProgressBarsAndReviews);
+    }
+
+    // Start the animation loop
+    requestAnimationFrame(updateProgressBarsAndReviews);
+});
+    </script>
+</body>
+</html>
